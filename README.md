@@ -13,9 +13,7 @@ A Claude Code skill that keeps edits surgical.
 
 ## Why I Built This
 
-I asked Claude to fix an email regex. One line. It fixed the regex, and also refactored the validation helper, reorganized the imports, added error handling I didn't ask for, and renamed two variables "for consistency."
-
-This happens all the time. You ask for a button, you get a reorganized component. You ask for a bug fix, you get a refactored file. The code works, but now you're reviewing changes you never requested and wondering what else got touched.
+I kept asking Claude for small changes and getting back large diffs. A one-line fix would come with a refactored helper, reorganized imports, renamed variables, and error handling I never asked for. The code worked, but I'd spend more time reviewing the stuff I didn't request than the thing I did.
 
 `/stay-focused` makes Claude check itself before every edit. If it's about to touch something you didn't ask for, it stops and asks first.
 
