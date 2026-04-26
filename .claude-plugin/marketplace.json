@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "stay-focused",
+  "owner": {
+    "name": "Harsh Joshi",
+    "url": "https://github.com/josharsh"
+  },
+  "metadata": {
+    "description": "Keeps Claude's edits surgical. Detects when Claude is about to change code you didn't ask for and flags it before proceeding.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "stay-focused",
+      "description": "Scope enforcer that detects out-of-scope edits, flags unasked modifications, and keeps code changes focused on what you actually requested.",
+      "source": "./",
+      "license": "MIT",
+      "category": "development",
+      "keywords": [
+        "scope",
+        "focus",
+        "surgical-edits",
+        "code-review",
+        "guardrails",
+        "developer-experience"
+      ],
+      "skills": [
+        "./skills/stay-focused"
+      ]
+    }
+  ]
+}

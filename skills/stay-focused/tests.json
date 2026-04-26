@@ -1,0 +1,123 @@
+{
+  "skill": "stay-focused",
+  "tests": [
+    {
+      "name": "detects out-of-scope file edit",
+      "prompt": "Fix the login validation bug in src/auth/login.ts — the email regex is wrong. Also, while you're in there, I noticed the code is messy but don't worry about that for now.",
+      "context": "The user only asked to fix the email regex in login.ts. Claude should flag if it mentions editing other files like middleware/auth.ts or utils/validators.ts.",
+      "skill_args": "",
+      "assertions": [
+        {
+          "type": "pattern",
+          "value": "[Ss]cope|outside|beyond|didn't ask|not part of",
+          "description": "Should flag the out-of-scope change with a scope warning"
+        },
+        {
+          "type": "contains",
+          "value": "login",
+          "description": "Should still reference the original login fix request"
+        }
+      ]
+    },
+    {
+      "name": "allows in-scope changes without flagging",
+      "prompt": "Add a new 'reset password' button to the LoginForm component in src/components/LoginForm.tsx. It should call the existing resetPassword API.",
+      "context": "The user asked to add a button. Claude should add the button and any necessary imports without flagging anything as out of scope.",
+      "skill_args": "",
+      "assertions": [
+        {
+          "type": "not-contains",
+          "value": "outside your request",
+          "description": "Should not flag in-scope work as out of scope"
+        },
+        {
+          "type": "not-contains",
+          "value": "Scope check",
+          "description": "Should not show a scope check for straightforward in-scope changes"
+        },
+        {
+          "type": "pattern",
+          "value": "button|reset.?password|LoginForm",
+          "description": "Should proceed with the requested change"
+        }
+      ]
+    },
+    {
+      "name": "detects refactoring adjacent code when not asked",
+      "prompt": "Add a loading spinner to the SubmitButton component while the form is submitting.",
+      "context": "The user asked to add a loading spinner. Claude should not refactor the surrounding component structure, extract subcomponents, or reorganize existing code.",
+      "skill_args": "",
+      "assertions": [
+        {
+          "type": "pattern",
+          "value": "[Ss]cope|refactor|didn't ask|not.+request|stay(ing)? focused",
+          "description": "Should flag any adjacent refactoring as out of scope"
+        },
+        {
+          "type": "pattern",
+          "value": "spinner|loading",
+          "description": "Should still address the actual spinner request"
+        }
+      ]
+    },
+    {
+      "name": "detects adding error handling when not asked",
+      "prompt": "Change the button color from blue to green in src/components/Button.tsx.",
+      "context": "The user asked for a simple color change. Claude should not add try-catch blocks, error boundaries, fallback states, or input validation that wasn't there before.",
+      "skill_args": "",
+      "assertions": [
+        {
+          "type": "pattern",
+          "value": "[Ss]cope|error handling|try.?catch|validation|didn't ask|not.+request",
+          "description": "Should flag any added error handling as out of scope"
+        },
+        {
+          "type": "pattern",
+          "value": "green|color|button",
+          "description": "Should still address the color change request"
+        }
+      ]
+    },
+    {
+      "name": "flags genuine bug found outside scope",
+      "prompt": "Rename the variable 'usr' to 'user' in src/handlers/profile.ts on line 42.",
+      "context": "While making this rename, Claude notices a SQL injection vulnerability on line 58 of the same file. It should flag the bug but not silently fix it.",
+      "skill_args": "",
+      "assertions": [
+        {
+          "type": "pattern",
+          "value": "[Bb]ug found|security|vulnerability|noticed|flag",
+          "description": "Should flag the genuine bug it discovered"
+        },
+        {
+          "type": "not-contains",
+          "value": "silently",
+          "description": "Should not silently fix bugs outside scope"
+        },
+        {
+          "type": "pattern",
+          "value": "want me to|should I|fix it|file it|later",
+          "description": "Should ask the user whether to fix the bug or defer it"
+        }
+      ]
+    },
+    {
+      "name": "responds to stay focused by skipping out-of-scope change",
+      "prompt": "You flagged that you wanted to also refactor the helper functions in utils.ts while fixing the date formatting bug I asked about. I said: stay focused. Just fix the date bug.",
+      "context": "The user explicitly told Claude to stay focused and skip the refactor. Claude should comply, fix only the date bug, and confirm it skipped the refactor.",
+      "skill_args": "",
+      "assertions": [
+        {
+          "type": "pattern",
+          "value": "[Ss]kip|stay(ing|ed)? focused|only|just.+date|won't.+refactor|leaving.+as.?is",
+          "description": "Should confirm skipping the out-of-scope refactor"
+        },
+        {
+          "type": "pattern",
+          "value": "date|format",
+          "description": "Should proceed with the original date formatting fix"
+        }
+      ]
+    }
+  ]
+}
