@@ -1,22 +1,32 @@
-# stay-focused
+# Stay Focused
 
-A Claude Code skill that keeps edits surgical. Detects when Claude is about to change code you didn't ask for.
+A Claude Code skill that keeps edits surgical. Detects when Claude is about to change code you didn't ask for and flags it before proceeding.
 
 ## Install
 
-**Plugin marketplace:**
-
-```bash
-claude plugin add josharsh/stay-focused
+**Via Claude Code plugin system (recommended):**
+```
+/plugin marketplace add https://github.com/josharsh/stay-focused
 ```
 
-**Manual:**
-
+**Via install script:**
 ```bash
 git clone https://github.com/josharsh/stay-focused.git
 cd stay-focused
-bash install.sh
+./install.sh
 ```
+
+**Manual:** Copy `skills/stay-focused/SKILL.md` to `~/.claude/skills/stay-focused/`.
+
+## How It Works
+
+Stay Focused adds a scope check before every code change. When Claude is about to edit or create a file, it compares the change against your original request:
+
+- **In scope** -- editing files you mentioned, adding required imports, fixing errors introduced by the change. These proceed without interruption.
+- **Out of scope** -- touching unmentioned files, refactoring adjacent code, adding error handling you didn't ask for, renaming variables, extracting helpers. These get flagged.
+- **Bugs found** -- if Claude discovers a genuine bug (crash, data loss, security issue) while working, it flags it separately so you can decide.
+
+The skill is lightweight. It only flags clear overreach, not obvious necessities.
 
 ## Demo
 
@@ -45,9 +55,17 @@ Claude: **Done.** Changed 1 file: src/auth/login.ts. Skipped: refactor of utils/
 
 ## Why This Exists
 
-Developers' #1 frustration with AI coding tools is unexpected changes -- 66% report spending more time fixing "almost-right" AI code than writing it themselves. `stay-focused` eliminates the problem at the source: Claude asks before touching anything you didn't request.
+The most common frustration with AI coding tools is unexpected changes. You ask for a bug fix and get a refactored file. You ask for a button and get reorganized components. `stay-focused` eliminates this at the source: Claude asks before touching anything you didn't request.
 
-## Uninstall
+## Testing
+
+Tests are defined in `tests.json` and compatible with [skillmother](https://github.com/josharsh/skillmother):
+
+```bash
+skillmother test ~/Development/stay-focused/
+```
+
+## Uninstalling
 
 ```bash
 rm -rf ~/.claude/skills/stay-focused
@@ -55,8 +73,8 @@ rm -rf ~/.claude/skills/stay-focused
 
 Or remove via the plugin marketplace:
 
-```bash
-claude plugin remove stay-focused
+```
+/plugin marketplace remove stay-focused
 ```
 
 ## License

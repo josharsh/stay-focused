@@ -9,9 +9,8 @@ echo "Installing Stay Focused skill..."
 # Create directory
 mkdir -p "$SKILL_DIR"
 
-# Copy skill files
+# Copy skill file
 cp "$SOURCE_DIR/skills/stay-focused/SKILL.md" "$SKILL_DIR/SKILL.md"
-cp "$SOURCE_DIR/skills/stay-focused/tests.json" "$SKILL_DIR/tests.json"
 
 echo ""
 echo "Stay Focused installed successfully!"
