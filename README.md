@@ -4,12 +4,19 @@ A Claude Code skill that keeps edits surgical.
 
 ## Install
 
-**Plugin marketplace:**
+In Claude Code, run:
+
 ```
-/plugin marketplace add https://github.com/josharsh/stay-focused
+/plugin marketplace add josharsh/stay-focused
 ```
 
-**Manual:** Copy `skills/stay-focused/SKILL.md` to `~/.claude/skills/stay-focused/`.
+Or manually:
+
+```bash
+mkdir -p ~/.claude/skills/stay-focused
+curl -sL https://raw.githubusercontent.com/josharsh/stay-focused/main/skills/stay-focused/SKILL.md \
+  -o ~/.claude/skills/stay-focused/SKILL.md
+```
 
 ## Why I Built This
 
